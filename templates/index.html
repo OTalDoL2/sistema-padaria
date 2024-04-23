@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="{{url_for('static', filename='style.css')}}">
+    <link rel= "stylesheet" type= "text/css" href="{{url_for('static', filename='bootstrap.min.css')}}">
+    <link rel= "stylesheet" type= "text/css" href="{{url_for('static', filename='style.css')}}">
+    
 </head>
 <body>
     
@@ -12,56 +14,69 @@
         <h2>Registro de Pedidos</h2>
         <form action="" method="post">
             <label for="item"> Digite o ID: </label>
-            <input type="text" name="idItem" id="">
+            <input type="text" name="idItem">
             <label for="item"> Digite a Quantidade: </label>
-            <input type="text" name="idQtd" id="">
+            <input type="text" name="idQtd">
             <input type="submit" value="adicionar">
         </form>
     </div>
-  
     
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Item</th>
-            <th>Quantidade</th>
-            <th>Valor</th>
-        </tr>
-
-        {% for produto in produtos %}
-            <tr>
-                <td> {{produto[0]}} </td>
-                <td> {{produto[1]}} </td>
-                <td> {{produto[2]}} </td>
-                <td> {{produto[4]}} </td>
-            </tr>
-        {% endfor %}
-    </table>
-
-    
-    <div class="listaDeCompras">        
-        <h2>Lista de Compras</h2>
-        <table>
-            <tr>
-                <th>Produto</th>
-                <th>Qtd</th>
-                <th>V Un</th>
-                <th>V Total</th>
-            </tr>
-            
-            {% for produto in produtos %}
-            <tr>
-                <td> {{produto[1]}} </td>
-                <td> 2 </td>
-                <td> {{produto[4]}} </td>
-                <td> {{produto[4] * 2}} </td>
-            </tr>
-            {% endfor %}
-        </table>
-        <p>Total Compra: </p>
+    <div class="container text-center">    
+        <div class="row">
+            <div class="col">
+                <div class="listaDeCompras">        
+                    <h2>Lista de Compras</h2>
+                    <table>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Qtd</th>
+                            <th>V Un</th>
+                            <th>V Total</th>
+                        </tr>
+                        
+                        {% for produto in lista %}
+                        <tr>
+                            <td> {{produto['nomeItem']}} </td>
+                            <td> {{produto['quantidade']}} </td>
+                            <td> {{produto['valor_unidade']}} </td>
+                            <td> {{produto['valor_total']}} </td>
+                            <td>{{produto['id']}}</td>
+                            <a href="/deletar?id={{produto['id']}}">remover</a>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <p>Total Compra: {{valor_compra}} </p>
+                </div>
+            </div>            
+            <div class="col">
+                <h2>Estoque de Produtos</h2>
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Item</th>
+                        <th>Quantidade</th>
+                        <th>Valor</th>
+                    </tr>
+                    
+                    {% for produto in produtos %}
+                    <tr>
+                        <td> {{produto[0]}} </td>
+                        <td> {{produto[1]}} </td>
+                        <td> {{produto[2]}} </td>
+                        <td> {{produto[4]}} </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
     </div>
 
-
+    <div class="final">
+        <a href="/realizar-compra">finalizar</a>
+    </div>
+    
+    
+    
     <script src="{{url_for('static', filename='script.js')}}"></script>
 </body>
 </html>
