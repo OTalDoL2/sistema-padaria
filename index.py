@@ -6,7 +6,7 @@ db = pymysql.connect(host='localhost', user='root', password='password', databas
 
 lista_de_compras = []
 valor_total_compra = 0
-
+idCliente = 0
 
 def atualiza_estoque():
     global lista_de_compras, valor_total_compra
@@ -27,18 +27,47 @@ def deletar():
 
     lista_de_compras.clear()
     id = request.args.get('id')
-    # print(lista_de_compras)
 
     for i in range(len(lista_de_compras)):
-        print(f"{lista_de_compras[i]['id']} == {id}")
         if int(lista_de_compras[i]['id']) != int(id):
             lista_de_compras.append(lista_de_compras[i])
+
     return redirect('/')
 
 
 
-@app.route('/realizar-compra', methods=['GET'])
+@app.route('/realizar-compra', methods=['POST'])
 def finaliza_compra():
+    global lista_de_compras, valor_total_compra
+    itens = []
+    valoresIndividuais = []
+    for i in range(len(lista_de_compras)):
+        itens.append(lista_de_compras[i]['id'])
+        valoresIndividuais.append(lista_de_compras[i]['valor_total'])
+
+    cursor = db.cursor()
+    sql = 'INSERT INTO notaFiscal(itens, valoresIndividuais, valorTotal) values (%s,%s,%s)'
+    cursor.execute(sql, (str(itens), str(valoresIndividuais), valor_total_compra))
+    db.commit()
+
+
+    documento = request.form.get('idCliente')
+    print(documento)
+    cursor = db.cursor()
+    sql = 'SELECT id FROM cliente WHERE id = %s or documento = %s'
+    cursor.execute(sql, (documento, documento))
+    id_cliente = cursor.fetchall()[0][0]
+    db.commit()
+    print(id_cliente)
+
+
+
+    
+    cursor = db.cursor()
+    sql = 'UPDATE cliente SET pontos = pontos + %s WHERE id = %s'
+    cursor.execute(sql, (10 * len(lista_de_compras) , id_cliente))
+    db.commit()
+
     atualiza_estoque()
     return redirect('/')
 
@@ -57,13 +86,6 @@ def index():
         return render_template('index.html', produtos=products, valor_compra=valor_total_compra, lista=lista_de_compras)
 
     else:
-        # cursor = db.cursor()
-        # query = 'select * from produtos'
-        # cursor.execute(query)
-        # db.commit()
-        # products = cursor.fetchall()
-        # return render_template('index.html', produtos=products, lista=lista_de_compras)
-        
         id = request.form.get('idItem')
         quantidade = request.form.get('idQtd')
         cursor = db.cursor()

@@ -17,6 +17,8 @@
             <input type="text" name="idItem">
             <label for="item"> Digite a Quantidade: </label>
             <input type="text" name="idQtd">
+            <label for="item"> Id do Cliente: </label>
+            <input type="text" id="idCliente" name="idCliente">
             <input type="submit" value="adicionar">
         </form>
     </div>
@@ -71,9 +73,10 @@
         </div>
     </div>
 
-    <div class="final">
-        <a href="/realizar-compra">finalizar</a>
-    </div>
+    <form action="/realizar-compra" method="post">
+        <input type="text" id="idCliente" name="idCliente">
+        <input type="submit" value="finalizar">
+    </form>
     
     
     
