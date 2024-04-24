@@ -1,5 +1,8 @@
 from flask import Flask, render_template, redirect, request
 import pymysql
+from classes.Cliente import Cliente
+from BancoDados import BancoDados
+from classes.NotaFiscal import NotaFiscal
 
 app = Flask(__name__)
 db = pymysql.connect(host='localhost', user='root', password='password', database='sistema_padaria')
@@ -41,32 +44,36 @@ def finaliza_compra():
     global lista_de_compras, valor_total_compra
     itens = []
     valoresIndividuais = []
+   
     for i in range(len(lista_de_compras)):
         itens.append(lista_de_compras[i]['id'])
         valoresIndividuais.append(lista_de_compras[i]['valor_total'])
 
-    cursor = db.cursor()
-    sql = 'INSERT INTO notaFiscal(itens, valoresIndividuais, valorTotal) values (%s,%s,%s)'
-    cursor.execute(sql, (str(itens), str(valoresIndividuais), valor_total_compra))
-    db.commit()
 
+    nota = NotaFiscal()
+    nota = nota.nova_nota_fiscal(str(itens), str(valoresIndividuais), valor_total_compra)
+    dbd = BancoDados()
+    nota = dbd.gera_nota_fiscal(nota)
 
     documento = request.form.get('idCliente')
-    print(documento)
-    cursor = db.cursor()
-    sql = 'SELECT id FROM cliente WHERE id = %s or documento = %s'
-    cursor.execute(sql, (documento, documento))
-    id_cliente = cursor.fetchall()[0][0]
-    db.commit()
-    print(id_cliente)
 
+    cliente = Cliente()
+    cliente = cliente.buscar_cliente(documento)
+
+    if cliente != False:
+        cliente = cliente.adicionar_pontos(len(lista_de_compras), valor_total_compra)
+        db = BancoDados()
+        db.atualizar_cliente(cliente)
+        documento = cliente.id 
+    else: 
+        documento = '001'
+    
+    db.registrar_compra(documento, nota.id)
 
 
     
-    cursor = db.cursor()
-    sql = 'UPDATE cliente SET pontos = pontos + %s WHERE id = %s'
-    cursor.execute(sql, (10 * len(lista_de_compras) , id_cliente))
-    db.commit()
+
+    
 
     atualiza_estoque()
     return redirect('/')
