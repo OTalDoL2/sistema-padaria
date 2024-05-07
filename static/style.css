@@ -1,0 +1,65 @@
+.container{
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.col{
+    margin: 0 30px;
+    /* background-color: black; */
+}
+
+.input-field{
+    /* background-color: aqua; */
+    width: 60%;
+    margin-left: 20%;
+}
+
+.registro-pedidos #adicionar{
+    margin-top: 8px;
+}
+
+.row{
+    width: 100vw;
+    display: flex;
+    /* background-color: aqua; */
+    justify-content: space-between;
+    
+
+}
+.registro-pedidos{
+    /* background-color: red; */
+    padding: 15px 0;
+    border-radius: 24px;
+}
+
+.estoque-produtos{
+    margin-top: 1.5rem;
+    /* background-color: red; */
+    padding: 15px;
+    border-radius: 24px;
+}
+tr td{
+    width: 235px;
+    margin-right: 10px;
+}
+.lista-compras{
+    /* display: block; */
+    overflow-y: auto;
+    height: 70vh;
+    /* margin-top: 15px; */
+    margin: 25px 0;
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 25px;
+    background-color: rgb(255, 243, 196);
+    /* border-width: 1px solid;
+    border-color: aqua; */
+    /* border: 1rem blue; */
+    /* background-color: green; */
+}
+.item{
+    margin-top: 15px;
+    /* background-color: yellow; */
+}

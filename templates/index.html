@@ -9,77 +9,89 @@
     
 </head>
 <body>
-    
-    <div class="caixa">
-        <h2>Registro de Pedidos</h2>
-        <form action="" method="post">
-            <label for="item"> Digite o ID: </label>
-            <input type="text" name="idItem">
-            <label for="item"> Digite a Quantidade: </label>
-            <input type="text" name="idQtd">
-            <label for="item"> Id do Cliente: </label>
-            <input type="text" id="idCliente" name="idCliente">
-            <input type="submit" value="adicionar">
-        </form>
-    </div>
-    
     <div class="container text-center">    
         <div class="row">
             <div class="col">
-                <div class="listaDeCompras">        
-                    <h2>Lista de Compras</h2>
-                    <table>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Qtd</th>
-                            <th>V Un</th>
-                            <th>V Total</th>
-                        </tr>
-                        
-                        {% for produto in lista %}
-                        <tr>
-                            <td> {{produto['nomeItem']}} </td>
-                            <td> {{produto['quantidade']}} </td>
-                            <td> {{produto['valor_unidade']}} </td>
-                            <td> {{produto['valor_total']}} </td>
-                            <td>{{produto['id']}}</td>
-                            <a href="/deletar?id={{produto['id']}}">remover</a>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                    <p>Total Compra: {{valor_compra}} </p>
+                <div class="listaDeCompras">       
+                    <div class="registro-pedidos">
+                        <h2>Registro de Pedidos</h2>
+                        <form action="" method="post">
+                            <div class="input-field">
+                                <label for="item"> Digite o ID: </label>
+                                <input type="text" name="idItem">
+                            </div>
+                            <br>
+                            <div class="input-field">
+                                <label for="item"> Digite a Quantidade: </label>
+                                <input type="text" name="idQtd">
+                            </div>
+                            <input type="submit" id="adicionar" value="adicionar">
+                        </form>
+                    </div> 
+                    <div class="estoque-produtos">
+                        <h2>Estoque de Produtos</h2>
+                        <table>
+                            <tr>
+                                <th>ID</th>
+                                <th>Item</th>
+                                <th>Quantidade</th>
+                                <th>Valor</th>
+                            </tr>
+                            
+                            {% for produto in produtos*2 %}
+                            <tr>
+                                <td> {{produto[0]}} </td>
+                                <td> {{produto[1]}} </td>
+                                <td> {{produto[2]}} </td>
+                                <td> {{produto[4]}} </td>
+                            </tr>
+                            {% endfor %}
+                        </table>                    
+                    </div>
                 </div>
             </div>            
             <div class="col">
-                <h2>Estoque de Produtos</h2>
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Item</th>
-                        <th>Quantidade</th>
-                        <th>Valor</th>
-                    </tr>
+                <div class="">
                     
-                    {% for produto in produtos %}
-                    <tr>
-                        <td> {{produto[0]}} </td>
-                        <td> {{produto[1]}} </td>
-                        <td> {{produto[2]}} </td>
-                        <td> {{produto[4]}} </td>
-                    </tr>
-                    {% endfor %}
-                </table>
+                    <h2>Lista de Compras</h2>
+                    <div class="lista-compras">
+                        <table>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Qtd</th>
+                                <th>V Un</th>
+                                <th>V Total</th>
+                            </tr>
+                            
+                            <!-- <div class="lista-itens"> -->
+                                {% for produto in lista %}
+                                <tr class="item">
+                                    <td> {{produto['nomeItem']}} </td>
+                                    <td> {{produto['quantidade']}} </td>
+                                    <td> {{produto['valor_unidade']}} </td>
+                                    <td> {{produto['valor_total']}} </td>
+                                    <td>{{produto['id']}}</td>
+                                    <td><a href="/deletar?id={{produto['id']}}">remover</a></td>
+                                    
+                                </tr>
+                                {% endfor %}
+                                <!-- </div> -->
+                            </table>
+                        </div>
+                        <p>Total Compra: {{valor_compra}} </p>
+                        
+                        <form action="/realizar-compra" method="post">
+                            <input type="text" id="idCliente" name="idCliente">
+                            <input type="submit" value="finalizar">
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <form action="/realizar-compra" method="post">
-        <input type="text" id="idCliente" name="idCliente">
-        <input type="submit" value="finalizar">
-    </form>
-    
-    
-    
-    <script src="{{url_for('static', filename='script.js')}}"></script>
-</body>
-</html>
+        
+        
+        
+        
+        <script src="{{url_for('static', filename='script.js')}}"></script>
+    </body>
+    </html>
